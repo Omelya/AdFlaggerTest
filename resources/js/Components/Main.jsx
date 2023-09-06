@@ -15,12 +15,6 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Loader } from '@/Components/Loader.jsx';
 
-export async function loader() {
-    const ads = await getAds();
-
-    return { ads };
-}
-
 const AppBar = styled(MuiAppBar, {
     shouldForwardProp: (prop) => prop !== 'open',
 })(({ theme, open }) => ({
@@ -34,13 +28,12 @@ const AppBar = styled(MuiAppBar, {
 const defaultTheme = createTheme();
 
 export default function Dashboard() {
-    const { ads } = useLoaderData();
     const navigate = useNavigate();
 
     const [ad, setAd] = useState([]);
     const [open, setOpen] = useState(false);
     const [page, setPage] = useState(1);
-    const [allAds, setAllAds] = useState(ads);
+    const [allAds, setAllAds] = useState([]);
     const [loading, setLoading] = useState(false);
 
     const refreshPage = () => {
@@ -70,10 +63,10 @@ export default function Dashboard() {
             setLoading(false);
             setAllAds(response);
         })
-          .catch((error) => {
-              setLoading(false);
-              toast.error(error.message);
-          })
+        .catch((error) => {
+            setLoading(false);
+            toast.error(error.message);
+        })
     }, [page]);
 
     return (
@@ -116,7 +109,7 @@ export default function Dashboard() {
                 >
                     <Toolbar />
                     {
-                        allAds.data.data.length > 0
+                        allAds.data?.data?.length > 0
                             ? <AdTable
                                 ads={allAds}
                                 refreshPage={refreshPage}
@@ -140,7 +133,7 @@ export default function Dashboard() {
                         marginBottom={2}
                     >
                         <Pagination
-                            count={ads.data.meta.last_page}
+                            count={allAds.data?.meta?.last_page}
                             page={page}
                             onChange={(_, page) => setPage(page)}
                             shape="rounded"

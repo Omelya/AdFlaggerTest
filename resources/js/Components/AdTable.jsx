@@ -60,7 +60,7 @@ export default function AdTable(props) {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {props.ads.data.data.map((row, key) => (
+                        {props.ads.data?.data?.map((row, key) => (
                             <TableRow
                                 key={key}
                                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
